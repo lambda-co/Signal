@@ -45,9 +45,7 @@ extension Optional{
 }
 
 public class Signal<a> : NSObject
-{
-    public typealias SignalToken = Int
-    
+{    
     fileprivate var subscribers:[ObserveFunctions<a>] = []
     
     public private(set) var value : a?
