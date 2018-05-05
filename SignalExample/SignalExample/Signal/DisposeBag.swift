@@ -8,20 +8,28 @@
 
 import UIKit
 
-protocol IDisposable {
+protocol IDisposable : AnyObject {
     func dispose()
 }
 
+final class WeakBox<a : AnyObject>{
+    weak var unbox : a?
+    init(_ value:a){
+        unbox = value
+    }
+}
+
 class DisposeBag: NSObject {
-    var disposeList : [IDisposable] = []
+    var disposeList : [WeakBox<AnyObject>] = []
     
     func registerDispose(x : IDisposable){
-        disposeList.append(x)
+        let reference = WeakBox<AnyObject>(x)
+        disposeList.append(reference)
     }
     
     deinit {
         for item in disposeList{
-            item.dispose()
+            item.unbox.flatMap{($0 as! IDisposable).dispose()}
         }
         
         disposeList.removeAll()

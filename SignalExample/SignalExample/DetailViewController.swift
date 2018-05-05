@@ -49,15 +49,16 @@ class DetailViewController: UIViewController {
         }).addToDisposeBag(dispose: dispose)
 
         
-        _ = onClickSignal.flatNext {[unowned self] (x) -> Signal<Int> in
+        _ = onClickSignal.flatNext {(x) -> Signal<Int> in
             let timerSignal = Signal(value: 10)
             print("button clicked")
-            self.tickTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
-
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
                 timerSignal.peek().flatMap(f: { (value) in
                     if value > 0{
                         timerSignal.update(value - 1)
                         print(value - 1)
+                    }else{
+                        timer.invalidate()
                     }
                 })
             })
@@ -67,14 +68,15 @@ class DetailViewController: UIViewController {
             }.map{
                 $0 == 0
             }
-            .flatNext(f: {[unowned self] (shouldRequestNetwork) -> Signal<Bool> in
+            .flatNext(f: {[weak self](shouldRequestNetwork) -> Signal<Bool> in
                 print("check!!!!!!!!!")
                 let finishedNetworkSignal = Signal(value: false)
                 if shouldRequestNetwork{
                     print("begin request network")
-                    self.uploadRecord(complete: { (x) in
+
+                    self.flatMap {$0.uploadRecord(complete: { (x) in
                         finishedNetworkSignal.update(true)
-                    })
+                    })}
                 }
                 return finishedNetworkSignal
             }).flatNext(f: { (isFinished) -> Signal<String> in
@@ -83,10 +85,10 @@ class DetailViewController: UIViewController {
                 }
                 return Signal(value: "")
             })
-        
 
         // Do any additional setup after loading the view.
     }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -95,7 +97,6 @@ class DetailViewController: UIViewController {
     
     @objc func onClick(sender : UIButton){
         if sender == self.button{
-            self.tickTimer?.invalidate()
             dismiss(animated: true) {
                 
             }

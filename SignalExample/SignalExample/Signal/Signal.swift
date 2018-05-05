@@ -110,6 +110,10 @@ public class Signal<a> : NSObject
     deinit {
         value.flatMap { print("Signal deinit \($0)") }
     }
+    
+    func clearFunctions(){
+        subscribers.removeAll()
+    }
 }
 
 extension Signal{
