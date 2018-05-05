@@ -63,11 +63,11 @@
 				93E5E974208F6DF300BF0FFB /* Signal */,
 				93E5E962208F6DE200BF0FFB /* AppDelegate.swift */,
 				93E5E964208F6DE200BF0FFB /* ViewController.swift */,
+				93C47A94209CC90C00157955 /* DetailViewController.swift */,
 				93E5E966208F6DE200BF0FFB /* Main.storyboard */,
 				93E5E969208F6DE400BF0FFB /* Assets.xcassets */,
 				93E5E96B208F6DE400BF0FFB /* LaunchScreen.storyboard */,
 				93E5E96E208F6DE400BF0FFB /* Info.plist */,
-				93C47A94209CC90C00157955 /* DetailViewController.swift */,
 			);
 			path = SignalExample;
 			sourceTree = "<group>";
