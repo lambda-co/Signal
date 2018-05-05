@@ -23,10 +23,7 @@ public class ObserveFunctions<a> : NSObject, IDisposable
     }
     
     func dispose() {
-        _ = parentSignal.flatMap { (x) -> String? in
-            x.removeFunction(x: self)
-            return nil
-        }
+        parentSignal.flatMap {$0.removeFunction(x: self)}
     }
 }
 
